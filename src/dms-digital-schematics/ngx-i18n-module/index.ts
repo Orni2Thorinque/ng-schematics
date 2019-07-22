@@ -30,10 +30,9 @@ export function ngxI18nModule(_options: NgxI18nModuleSchema): Rule {
     const parsedLangs: Array<string> = _options.langs.split(',');
     _options.parsedLangs = parsedLangs;
 
-    const parsedAssetPath = _options.assetPath ? join(parsedPath.path, _options.assetPath) : parsedPath.path;
     parsedLangs.forEach((lang: string) =>
       tree.create(
-        `${parsedAssetPath}\\i18n\\${lang}.json`,
+        `${_options.assetPath}\\i18n\\${lang}.json`,
         `{ "KEY": "VALUE" }`
       )
     );
