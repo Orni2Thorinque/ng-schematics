@@ -1,18 +1,13 @@
 {
     "$schema": "http://json-schema.org/schema",
-    "id": "ngx-i18n-ready",
-    "title": "Creates an i18n ready package",
+    "id": "ng-material-ready",
+    "title": "Creates a material-ready schematics",
     "type": "object",
     "properties": {
         "project": {
             "type": "string",
             "description": "Angular generation project target",
             "x-prompt": "Import project name ?"
-        },
-        "assetPath": {
-            "type": "string",
-            "description": "I18n assets hosting directory location path",
-            "x-prompt": "i18n files directory ?"
         },
         "modulePath": {
             "type": "string",
@@ -25,11 +20,15 @@
             "default": "app",
             "x-prompt": "Module prefix ?"
         },
-        "langs": {
-            "type": "string",
-            "description": "I18n supported langs",
-            "x-prompt": "i18n lang (fr,en,cn...) ?",
-            "default": "fr,en"
+        "importStyle": {
+            "type": "boolean",
+            "description": "Import a default theme into global style file",
+            "x-prompt": "Import default theme into global style ?"
+        },
+        "importHammerGesture": {
+            "type": "boolean",
+            "description": "Import HammerJS gesture support",
+            "x-prompt": "Import HammerJS gesture support ?"
         }
     },
     "required": []

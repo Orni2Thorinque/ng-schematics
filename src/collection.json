@@ -5,6 +5,11 @@
       "description": "Angular i18n translate module based on ngx-translate",
       "factory": "./dms-digital-schematics/ngx-i18n-module/index#ngxI18nModule",
       "schema": "./dms-digital-schematics/ngx-i18n-module/schema.json"
+    },
+    "ng-material-module": {
+      "description": "Angular material module based on @angular/material",
+      "factory": "./dms-digital-schematics/ng-material-module/index#ngMaterialModule",
+      "schema": "./dms-digital-schematics/ng-material-module/schema.json"
     }
   }
 }
