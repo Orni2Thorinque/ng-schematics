@@ -1,0 +1,10 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ngx-i18n-module": {
+      "description": "Angular i18n translate module based on ngx-translate",
+      "factory": "./dms-digital-schematics/ngx-i18n-module/index#ngxI18nModule",
+      "schema": "./dms-digital-schematics/ngx-i18n-module/schema.json"
+    }
+  }
+}

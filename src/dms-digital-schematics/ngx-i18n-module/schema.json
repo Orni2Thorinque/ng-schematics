@@ -1,0 +1,36 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "id": "material-ready",
+    "title": "Creates a material-ready schematics",
+    "type": "object",
+    "properties": {
+        "project": {
+            "type": "string",
+            "description": "Angular generation project target",
+            "x-prompt": "Import project name ?"
+        },
+        "assetPath": {
+            "type": "string",
+            "description": "I18n assets hosting directory location path",
+            "x-prompt": "i18n files directory ?"
+        },
+        "modulePath": {
+            "type": "string",
+            "description": "Target module for module import",
+            "x-prompt": "Import module target path?"
+        },
+        "prefix": {
+            "type": "string",
+            "description": "Module prefix",
+            "default": "app",
+            "x-prompt": "Module prefix ?"
+        },
+        "langs": {
+            "type": "string",
+            "description": "I18n supported langs",
+            "x-prompt": "i18n lang (fr,en,cn...) ?",
+            "default": "fr,en"
+        }
+    },
+    "required": []
+}
