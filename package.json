@@ -1,6 +1,6 @@
 {
   "name": "dms-digital-schematics",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "DMS Digital schematics collection",
   "scripts": {
     "build": "tsc -p tsconfig.json",
