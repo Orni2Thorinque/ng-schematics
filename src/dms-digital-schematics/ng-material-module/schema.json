@@ -17,18 +17,26 @@
         "prefix": {
             "type": "string",
             "description": "Module prefix",
-            "default": "app",
-            "x-prompt": "Module prefix ?"
+            "x-prompt": "Module prefix ?",
+            "default": "app"
+        },
+        "iconRegistry": {
+            "type": "boolean",
+            "description": "Creates an icon registry and a dedicated service",
+            "x-prompt": "Generate icon registry ?",
+            "default": true
         },
         "importStyle": {
             "type": "boolean",
             "description": "Import a default theme into global style file",
-            "x-prompt": "Import default theme into global style ?"
+            "x-prompt": "Import default theme into global style ?",
+            "default": true
         },
         "importHammerGesture": {
             "type": "boolean",
             "description": "Import HammerJS gesture support",
-            "x-prompt": "Import HammerJS gesture support ?"
+            "x-prompt": "Import HammerJS gesture support ?",
+            "default": true
         }
     },
     "required": []

@@ -65,3 +65,54 @@ export function findModule(host: Tree, _: string): Path {
 
     throw new Error(`Could not find an NgModule from ${JSON.stringify(host)} and dir ${dir}`);
 }
+
+export function addPackages(depedenciesMap: Map<string, string>, host: Tree): void {
+    try {
+        const packageJsonFile = host.read('package.json');
+
+        if (packageJsonFile) {
+            const packageJsonFileObject = JSON.parse(packageJsonFile.toString('utf-8'));
+
+            const depedenciesObject = packageJsonFileObject.dependencies;
+            depedenciesMap.forEach((version: string, packageName: string) => {
+                depedenciesObject[packageName] = version;
+            })
+
+            host.overwrite('package.json', JSON.stringify(packageJsonFileObject, null, 2));
+        }
+    } catch (e) {
+        throw new SchematicsException('Unable to open package.json file');
+    }
+}
+
+export type ImportDeclarationType = 'simple' | 'start' | 'brackets' | 'css';
+
+export function addImportDeclaration(declaration: string, filePath: string, importType: ImportDeclarationType, host: Tree): void {
+    try {
+        const targetFile = host.read(filePath);
+
+        if (targetFile) {
+            let importDeclaration = '';
+            let targetFileText = targetFile.toString('utf-8');
+
+            switch (importType) {
+                case 'simple':
+                    importDeclaration = `import '${declaration}';\n`;
+                    break;
+
+                case 'css':
+                    importDeclaration = `@import '${declaration}';\n`;
+                    break;
+
+                default:
+                    break;
+            }
+
+            targetFileText = importDeclaration + targetFileText;
+
+            host.overwrite(filePath, targetFileText);
+        }
+    } catch (e) {
+        throw new SchematicsException(`Unable to open ${filePath}`);
+    }
+}
