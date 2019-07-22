@@ -66,7 +66,7 @@ export function findModule(host: Tree, _: string): Path {
     throw new Error(`Could not find an NgModule from ${JSON.stringify(host)} and dir ${dir}`);
 }
 
-export function addPackages(depedenciesMap: Map<string, string>, host: Tree): void {
+export function addPackages(depedenciesMap: Map<string, string>, host: Tree) {
     try {
         const packageJsonFile = host.read('package.json');
 
