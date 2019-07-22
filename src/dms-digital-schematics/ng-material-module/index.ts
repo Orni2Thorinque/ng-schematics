@@ -1,14 +1,33 @@
 import { normalize, Path, strings } from '@angular-devkit/core';
 import { classify, dasherize } from '@angular-devkit/core/src/utils/strings';
-import { apply, mergeWith, move, Rule, SchematicContext, SchematicsException, template, Tree, url } from '@angular-devkit/schematics';
+import { apply, filter, mergeWith, move, noop, Rule, SchematicContext, SchematicsException, Source, template, Tree, url } from '@angular-devkit/schematics';
 import { parseName } from '@schematics/angular/utility/parse-name';
 import { buildDefaultPath } from '@schematics/angular/utility/project';
-import { join } from 'path';
 import { addImport, findModule } from '../schematics-utils/ast-utils';
 import { printStringArray } from '../schematics-utils/string.utils';
-import { NgxI18nModuleSchema } from './schema';
+import { NgMaterialModuleSchema } from './schema';
 
-export function ngxI18nModule(_options: NgxI18nModuleSchema): Rule {
+export function ngMaterialModuleTest(_options: NgMaterialModuleSchema): Rule {
+  return (tree: Tree, _context: SchematicContext) => {
+
+    // Parameterize templates and files accordingly
+    const templateSources: Source = apply(url('./templates'),
+      [!_options.iconRegistry ? filter(path => !path.endsWith('.service.ts')) : noop()]);
+
+    const rule: Rule = template({
+      ..._options,
+      ...strings,
+      printStringArray,
+    });
+
+
+    // Update tree
+    const sourceParametrizedTemplates = apply(templateSources, [rule, move('/src/app')]);
+    return mergeWith(sourceParametrizedTemplates);
+  }
+}
+
+export function ngMaterialModule(_options: NgMaterialModuleSchema): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
     // Retrieve Angular project config properties
@@ -25,18 +44,8 @@ export function ngxI18nModule(_options: NgxI18nModuleSchema): Rule {
     const parsedPath = parseName(defaultProjectPath, '');
 
     // Parameterize templates and files accordingly
-    const templateSources = url('./templates');
-
-    const parsedLangs: Array<string> = _options.langs.split(',');
-    _options.parsedLangs = parsedLangs;
-
-    const parsedAssetPath = _options.assetPath ? join(parsedPath.path, _options.assetPath) : parsedPath.path;
-    parsedLangs.forEach((lang: string) =>
-      tree.create(
-        `${parsedAssetPath}\\i18n\\${lang}.json`,
-        `{ "KEY": "VALUE" }`
-      )
-    );
+    const templateSources: Source = apply(url('./templates'),
+      [!_options.iconRegistry ? filter(path => !path.endsWith('.service.ts')) : noop()]);
 
     const rule: Rule = template({
       ..._options,
@@ -53,9 +62,8 @@ export function ngxI18nModule(_options: NgxI18nModuleSchema): Rule {
       if (targetModulePath) {
         targetModulePath = normalize(foundModulePath).toString();
 
-        const classifiedName = `${classify(_options.prefix ? _options.prefix : 'app')}I18nModule`;
-        // const importPath = `./${dasherize(classifiedName)}`;
-        const importPath = `./${dasherize(<string>_options.prefix)}-i18n.module`;
+        const classifiedName = `${classify(_options.prefix ? _options.prefix : 'app')}MaterialModule`;
+        const importPath = `./${dasherize(<string>_options.prefix)}-material.module`;
 
         _context.logger.info(`
           targetModulePath: ${targetModulePath}

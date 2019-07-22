@@ -3,6 +3,7 @@ import { DirEntry, SchematicsException, Tree } from '@angular-devkit/schematics'
 import { addImportToModule } from '@schematics/angular/utility/ast-utils';
 import { InsertChange } from '@schematics/angular/utility/change';
 import * as ts from 'typescript';
+import { NgMaterialModuleSchema } from '../ng-material-module/schema';
 
 export class AddToModuleContext {
     targetModulePath: string;
@@ -64,4 +65,23 @@ export function findModule(host: Tree, _: string): Path {
     }
 
     throw new Error(`Could not find an NgModule from ${JSON.stringify(host)} and dir ${dir}`);
+}
+
+export function addPackages(depedenciesMap: Map<string, string>, host: Tree) {
+    try {
+        const packageJsonFile = host.read('package.json');
+
+        if (packageJsonFile) {
+            const packageJsonFileObject = JSON.parse(packageJsonFile.toString('utf-8'));
+
+            const depedenciesObject = packageJsonFileObject.dependencies;
+            depedenciesMap.forEach((version: string, packageName: string) => {
+                depedenciesObject[packageName] = version;
+            })
+
+            host.overwrite('package.json', JSON.stringify(packageJsonFileObject, null, 2));
+        }
+    } catch (e) {
+        throw new SchematicsException('Unable to open package.json file');
+    }
 }

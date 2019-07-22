@@ -4,4 +4,5 @@ export interface NgMaterialModuleSchema {
     modulePath?: string;
     importStyle?: boolean;
     importHammerGesture?: boolean;
+    iconRegistry?: boolean;
 }

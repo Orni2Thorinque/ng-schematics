@@ -4,7 +4,7 @@ import { apply, mergeWith, move, Rule, SchematicContext, SchematicsException, te
 import { parseName } from '@schematics/angular/utility/parse-name';
 import { buildDefaultPath } from '@schematics/angular/utility/project';
 import { join } from 'path';
-import { addImport, findModule } from '../schematics-utils/ast-utils';
+import { addImport, findModule, addPackages } from '../schematics-utils/ast-utils';
 import { printStringArray } from '../schematics-utils/string.utils';
 import { NgxI18nModuleSchema } from './schema';
 
@@ -68,12 +68,16 @@ export function ngxI18nModule(_options: NgxI18nModuleSchema): Rule {
           classfiedName: classifiedName,
           importPath: importPath,
         });
-
-
+        
       } else {
         throw new SchematicsException(`Unable to locate target module from path ${targetModulePath}`);
       }
     }
+
+    const depedencies: Map<string, string> = new Map();
+    depedencies.set('@ngx-translate/core', '^11.0.1');
+    depedencies.set('@ngx-translate/http-loader', '^4.0.0');
+    addPackages(depedencies, tree);
 
     // Update tree
     const sourceParametrizedTemplates = apply(templateSources, [rule, move('/src/app')]);
