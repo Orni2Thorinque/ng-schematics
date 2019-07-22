@@ -1,25 +1,43 @@
+# DMS-DIGITAL-SCHEMATICS
+This repository is a Schematic implementation for the following features
+1. NGX-TRANSLATE for Angular 8+
+2. NG-MATERIAL for Angular 8+
 
-# Getting Started With Schematics
 
-  
+## Build schematics files and package
 
-This repository is a basic Schematic implementation for the following features
+ 1. Transpile typescript files to javascript
+	`npm run build`
+	
+ 2. Pack schematics as NPM package ***dms-digital-schematics-1.0.0.tgz***
+	`npm pack`
 
- 1. NGX-TRANSLATE for Angular 6+
+## Schematics collection
+**NGX-TRANSLATE** schematics alias ***ngx-i18n-module***
+ - Add ngx-translate depedencies in ***package.json***
+ - Create ngx-translate standalone module
+ - Add standalone module to global module
+ - Create i18n assets directory and files
 
-  
+**NG-MATERIAL** schematics alias ***ng-material-module***
+ - Add ***@angular/material***  and ***@angular/cdk*** depedencies in ***package.json***
+ - Add ***Hammerjs*** depedencies in ***package.json***
+ - Create material standalone module
+ - Add standalone module to global module
+ - Add default material theme in global style css file
+ - Add ***hammerjs*** depedency import in main typescript file
 
-## Build schematics files
+## Install schematics in existing project
+Use NPM to install built NPM package
+	`npm install --no-save /path/to/dms-digital-schematics-1.0.0.tgz`
 
-Transpile typescript files to javascript
+## Execute schematic
+**Execute (without install)**
 
-`npm run build`
+*`schematics --force --debug=false /path/to/collection.json:schematic-alias`*
 
-  
+**Execute (with install)**
+*`ng generate dms-digital-schematics:schematic-alias`*
 
-## NGX-TRANSLATE schematic
-
-NGX-TRANSLATE schematics alias ***ngx-i18n-module***
-
-**Execute** 
-*`schematics --force --debug=false /path/to/collection.json:ngx-i18n-module`*
+**Example:**
+*`ng generate dms-digital-schematics:ng-material-module`*
