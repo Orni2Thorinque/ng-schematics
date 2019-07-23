@@ -3,7 +3,6 @@ import { classify, dasherize } from '@angular-devkit/core/src/utils/strings';
 import { apply, mergeWith, move, Rule, SchematicContext, SchematicsException, template, Tree, url } from '@angular-devkit/schematics';
 import { parseName } from '@schematics/angular/utility/parse-name';
 import { buildDefaultPath } from '@schematics/angular/utility/project';
-import { join } from 'path';
 import { addImport, addPackages, findModule } from '../schematics-utils/ast-utils';
 import { printStringArray } from '../schematics-utils/string.utils';
 import { NgxI18nModuleSchema } from './schema';
@@ -53,13 +52,15 @@ export function ngxI18nModule(_options: NgxI18nModuleSchema): Rule {
         targetModulePath = normalize(foundModulePath).toString();
 
         const classifiedName = `${classify(_options.prefix ? _options.prefix : 'app')}I18nModule`;
-        // const importPath = `./${dasherize(classifiedName)}`;
         const importPath = `./${dasherize(<string>_options.prefix)}-i18n.module`;
 
         _context.logger.info(`
+          defaultProjectPath: ${defaultProjectPath}
+          parsedPath: ${parsedPath}
           targetModulePath: ${targetModulePath}
           classifiedName: ${classifiedName}
           importPath: ${importPath}
+          _options.modulePath ${_options.modulePath}
         `);
 
         addImport(tree, {
@@ -79,7 +80,7 @@ export function ngxI18nModule(_options: NgxI18nModuleSchema): Rule {
     addPackages(depedencies, tree);
 
     // Update tree
-    const sourceParametrizedTemplates = apply(templateSources, [rule, move(_options.modulePath ? _options.modulePath : 'src/app')]);
-    return mergeWith(sourceParametrizedTemplates);
+    const sourceParametrizedTemplates = apply(templateSources, [rule, move(_options.modulePath ? normalize(_options.modulePath) : '.')]);
+    return mergeWith(sourceParametrizedTemplates)(tree, _context);
   };
 }

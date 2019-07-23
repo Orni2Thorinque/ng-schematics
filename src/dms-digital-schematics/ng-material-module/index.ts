@@ -46,9 +46,12 @@ export function ngMaterialModule(_options: NgMaterialModuleSchema): Rule {
         const importPath = `./${dasherize(<string>_options.prefix)}-material.module`;
 
         _context.logger.info(`
+          defaultProjectPath: ${defaultProjectPath}
+          parsedPath: ${parsedPath}
           targetModulePath: ${targetModulePath}
           classifiedName: ${classifiedName}
           importPath: ${importPath}
+          _options.modulePath ${_options.modulePath}
         `);
 
         addImport(tree, {
@@ -62,7 +65,7 @@ export function ngMaterialModule(_options: NgMaterialModuleSchema): Rule {
       }
     }
 
-    // Add pacakge.json declarations
+    // Add packge.json declarations
     const depedencies: Map<string, string> = new Map();
 
     depedencies.set('@angular/cdk', '^8.0.0');
@@ -87,7 +90,7 @@ export function ngMaterialModule(_options: NgMaterialModuleSchema): Rule {
     }
 
     // Update tree
-    const sourceParametrizedTemplates = apply(templateSources, [rule, move(_options.modulePath ? _options.modulePath : 'src/app')]);
-    return mergeWith(sourceParametrizedTemplates);
+    const sourceParametrizedTemplates = apply(templateSources, [rule, move(_options.modulePath ? normalize(_options.modulePath) : '.')]);
+    return mergeWith(sourceParametrizedTemplates)(tree, _context);
   };
 }
